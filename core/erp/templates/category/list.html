@@ -1,0 +1,39 @@
+{% extends 'list.html' %}
+
+{% load static %}
+
+{% block head_list %}
+<script type="text/javascript" src="{% static 'category/js/list.js' %}" defer></script>
+{% endblock %}
+
+{% block column %}
+<tr>
+    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending"
+        style="width: 131.172px;">Nrm</th>
+    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 218.172px;">Nombre
+    </th>
+    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 218.172px;">
+        Descripcion</th>
+    <th class="sorting" tabindex="0" rowspan="1" colspan="1" style="width: 96.9688px;">Opciones</th>
+</tr>
+{% endblock %}
+
+{% block row %}
+
+{% endblock %}
+
+
+<!-- <tbody>
+    {% for c in object_list %}
+    <tr>
+        <th scope="row">{{c}}</th>
+        <td>{{c.nombre}}</td>
+        <td>
+            <a href="{% url 'erp:category_update' c.id %}" class="btn btn-primary p-1">
+                <i class="bi bi-pencil-square"></i>
+            </a>
+            <a class="btn btn-danger p-1" href="{% url 'erp:category_delete' c.id %}"><i class="bi bi-trash"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody> -->

@@ -4,5 +4,8 @@ from django.contrib import admin
 from .models import *
 
 
-admin.site.register(Employee)
-admin.site.register(Type)
+admin.site.register(Producto)
+admin.site.register(Cliente)
+admin.site.register(Venta)
+admin.site.register(Categoria)
+admin.site.register(DetVenta)
