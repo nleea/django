@@ -36,7 +36,6 @@
             },
         ],
         initComplete: function (settings, json) {
-
         }
     });
 })();

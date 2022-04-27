@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinValueValidator
 from datetime import datetime
 from django.forms import model_to_dict
+from config.settings import MEDIA_URL, STATIC_URL
+from os import path
 # Create your models here.
 
 
@@ -19,6 +21,9 @@ class Cliente(models.Model):
 
     def __str__(self) -> str:
         return self.nombre
+
+    def toJSON(self):
+        return model_to_dict(self, exclude=[''])
 
     class Meta:
         verbose_name = 'Cliente'
@@ -51,7 +56,7 @@ class Categoria(models.Model):
                             blank=True, verbose_name='Description')
 
     def __str__(self) -> str:
-        return str(self.id)
+        return str(self.nombre)
 
     def toJSON(self):
         return model_to_dict(self, exclude=[''])
@@ -68,6 +73,13 @@ class Producto(models.Model):
     nombre = models.CharField(verbose_name="Nombre",
                               unique=True, max_length=150)
     pvp = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    image = models.ImageField(verbose_name='Image',
+                              upload_to='product/a', blank=True, null=True)
+
+    def get_image(self):
+        if self.image:
+            return '{}{}'.format(MEDIA_URL, self.image)
+        return '/{}{}'.format(STATIC_URL, 'img/empty.png')
 
     def __str__(self) -> str:
         return self.nombre
@@ -89,6 +101,9 @@ class DetVenta(models.Model):
                                MinValueValidator(limit_value=0)], verbose_name="Precio")
     subTotal = models.FloatField(verbose_name="Sub Total", validators=[
                                  MinValueValidator(limit_value=0)], default=0)
+
+    def toJSON(self):
+        return model_to_dict(self, exclude=[''])
 
     class Meta:
         verbose_name = 'Det Venta'

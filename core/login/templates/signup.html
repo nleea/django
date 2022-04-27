@@ -1,0 +1,79 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'lib/adminlte/plugins/font-awesome/css/all.min.css' %}">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{% static 'lib/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'lib/adminlte/css/adminlte.min.css' %}">
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="{% url 'home' %}" class="h1"><b>Login</b></a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+                <form action="." method="post">
+                    <input type="hidden" name="next" value="{{next}}">
+                    <!-- Nos sirve para redireccionar hacia la ultima vista que nos quedamos -->
+                    {% csrf_token %}
+
+
+                    {% for field in form.visible_fields %}
+                    <div class="mb-3">
+                        {% if field.name != 'password1' and field.name != 'password2' %}
+                        {{field|add_class:'form-control' }}
+                        {% else %}
+                        {% render_field field|add_class:'form-control' placeholder=field.name %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-block"> <i class="fas fa-sign-in-alt"></i>
+                                Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.social-auth-links -->
+
+                <p class="mb-1">
+                    <a href="#">I forgot my password</a>
+                </p>
+                <p class="mb-0">
+                    <a href="#" class="text-center">Register a new membership</a>
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.login-box -->
+
+    <!-- jQuery -->
+    <script src="{% static 'lib/adminlte/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'lib/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'lib/adminlte/js/adminlte.min.js' %}"></script>
+</body>
+
+</html>

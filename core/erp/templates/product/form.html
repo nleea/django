@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="alert alert-danger d-flex align-items-center" role="alert" style="display: none !important;">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+    <div>
+        <ul></ul>
+    </div>
+</div>
+
+
+<div class="card w-75 mx-auto">
+    <form action="." method="post" class="form">
+        <div class="card header p-3 border-0 rounded-0">
+            <h3 class="card-title">
+                <i class="{{ class_icon }}"></i>
+                {{title}}
+            </h3>
+        </div>
+        <div class="card-body">
+            <div id="example_wrapper" class="dataTables_wrapper">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="{{ action }}">
+                {% for field in form.visible_fields %}
+                <div class="form-group">
+                    <label for="{{field.name}}">{{field.label}}: </label>
+                    {{field|add_class:'form-control'|attr:'autocomplete:off' }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="{{ class_color }} rounded-0" type="submit">
+                <i class="{{ class_icon_save }}"></i>
+                {{title}}
+            </button>
+            <a class="btn btn-danger  rounded-0 text-light" type="button" href="{% url 'erp:product_list' %}">
+                <i class="bi bi-x-lg"></i>
+                Cancelar
+            </a>
+        </div>
+    </form>
+
+    <script type="module">
+        import { submit } from "{% static 'js/form.js' %}";
+        const form = document.querySelector('.form');
+        if ('{{action}}' === 'add') {
+            form.addEventListener('submit', (e) => submit(e, '{% url "erp:product_create" %}', '{% url "erp:product_list" %}'));
+        } else if ('{{action}}' === 'edit') {
+            form.addEventListener('submit', (e) => submit(e, window.location.pathname, '{% url "erp:product_list" %}'));
+        }
+    </script>
+</div>
+{% endblock %}

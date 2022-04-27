@@ -4,7 +4,12 @@ from django.contrib import admin
 from .models import *
 
 
-admin.site.register(Producto)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['id_cat', 'nombre', 'pvp']
+    
+
+
+admin.site.register(Producto, ProductAdmin)
 admin.site.register(Cliente)
 admin.site.register(Venta)
 admin.site.register(Categoria)

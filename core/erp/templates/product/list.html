@@ -1,0 +1,55 @@
+{% extends 'list.html' %}
+
+{% load static %}
+
+
+{% block column %}
+<tr>
+    <th class="sorting sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending"
+        style="width: 131.172px;">Nrm</th>
+    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 218.172px;">
+        Nombre
+    </th>
+    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 218.172px;">
+        PvP
+    </th>
+    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 218.172px;">
+        Imagenes
+    </th>
+    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 218.172px;">
+        Opciones
+    </th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+{% for obj in object_list %}
+<tr>
+    <td>{{ obj.id }}</td>
+    <td>{{ obj.name }}</td>
+    <td>{{ obj.cat.name }}</td>
+    <td class="text-center">
+        {# {{ obj.image }}#}
+        <img src="{{ obj.get_image }}" class="img-fluid d-block mx-auto" style="width: 20px; height: 20px;">
+    </td>
+    <td class="text-center"><span class="badge badge-pill badge-secondary">${{ obj.pvp }}</span></td>
+    <td class="text-center">
+        <a href="{% url 'erp:product_update' obj.id %}" class="btn btn-warning ">
+            <i class="bi bi-pencil-square"></i>
+        </a>
+        <a href="{% url 'erp:product_delete' obj.id %}" class="btn btn-danger">
+            <i class="bi bi-trash"></i>
+        </a>
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+<a href="{% url 'erp:product_create' %}" class="btn btn-primary btn-flat btnTest">
+    <i class="fas fa-plus"></i> Nuevo registro
+</a>
+<a href="{% url 'erp:product_list' %}" class="btn btn-success btn-flat btnTest">
+    <i class="bi bi-arrow-clockwise"></i> Actualizar
+</a>
+{% endblock %}

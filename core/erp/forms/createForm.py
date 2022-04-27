@@ -32,7 +32,7 @@ class CategoryForm(ModelForm):
             })
         }
 
-    def save(self):
+    def save(self):  # Nos sirve para crear validaciones para el formulario
         form = super()
         data = {}
         try:
@@ -43,3 +43,9 @@ class CategoryForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
+
+    def clean(self):
+        cleaned = super().clean()
+        if len(cleaned['nombre']) > 50:
+            self.add_error('nombre', "El nombre es demasiado largo")
+        return cleaned

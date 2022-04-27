@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-jete@ltf4a!0!0k^ubk8mo2=z-qlx$a4t4fyx)6^$bot8_i*y5
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Apps para que haga las migrciones de erp tambien
     'core.erp',
+    'core.homepage',
+    'core.login',
+    'core.user',
+    # librerias para django
     'widget_tweaks'
 ]
 
@@ -117,10 +121,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, STATIC_URL),
 ]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'img/')
+MEDIA_URL = '/img/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/erp/dashboard'
+LOGOUT_REDIRECT_URL = '/login'
+LOGIN_URL = '/login'
+
+AUTH_USER_MODEL = 'user.User'

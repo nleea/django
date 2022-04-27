@@ -9,19 +9,12 @@
 {% block content %}
 
 
-<div class="alert alert-danger d-flex align-items-center hidden" role="alert" style="visibility: hidden;">
+<div class="alert alert-danger d-flex align-items-center" role="alert" style="display: none !important;">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
         <use xlink:href="#exclamation-triangle-fill" />
     </svg>
     <div>
-        <ul>
-            <!-- {% for field in error %} -->
-            <h1>{{error}}</h1>
-            <!-- {% for error in field.errors %}
-            <li>{{error}}</li>
-            {% endfor %} -->
-            <!-- {% endfor %} -->
-        </ul>
+        <ul></ul>
     </div>
 </div>
 
@@ -51,6 +44,10 @@
                 <i class="{{ class_icon_save }}"></i>
                 {{title}}
             </button>
+            <a class="btn btn-danger  rounded-0 text-light" type="button" href="{% url 'erp:category_list' %}">
+                <i class="bi bi-x-lg"></i>
+                Cancelar
+            </a>
         </div>
     </form>
 

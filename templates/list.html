@@ -10,7 +10,7 @@
 <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
 <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
-<script src="{% static 'js/datatable.js' %}" defer></script>
+<!-- <script src="{% static 'js/datatable.js' %}" defer></script> -->
 
 {% block head_list %}
 
@@ -33,17 +33,23 @@
 
                 {% endblock %}
             </thead>
+
             <tbody>
                 {% block rows %}
-
                 {% endblock %}
             </tbody>
         </table>
     </div>
     <div class="card-footer">
+        {% block footer %}
         <a href="{% url 'erp:category_form' %}" class="btn btn-primary btn-flat btnTest">
             <i class="fas fa-plus"></i> Nuevo registro
         </a>
+        <a href="{% url 'erp:category_list' %}" class="btn btn-success btn-flat btnTest">
+            <i class="bi bi-arrow-clockwise"></i> Actualizar
+        </a>
+        {% endblock %}
+
     </div>
 </div>
 {% endblock %}
