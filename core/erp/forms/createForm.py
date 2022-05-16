@@ -31,13 +31,15 @@ class CategoryForm(ModelForm):
                 'rows': 3
             })
         }
+        # excluir campos para que no aparezcan en el renderizado
+        exclude = ['user_create', 'user_update']
 
-    def save(self):  # Nos sirve para crear validaciones para el formulario
+    def save(self, commit=True):  # Nos sirve para crear validaciones para el formulario
         form = super()
         data = {}
         try:
             if form.is_valid():
-                form.save()
+                form.save(commit)
             else:
                 data['error'] = form.errors
         except Exception as e:

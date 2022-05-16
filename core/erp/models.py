@@ -3,27 +3,31 @@ from django.core.validators import MinValueValidator
 from datetime import datetime
 from django.forms import model_to_dict
 from config.settings import MEDIA_URL, STATIC_URL
-from os import path
+from core.models import BaseModel
+from crum import get_current_user
 # Create your models here.
 
 
 class Cliente(models.Model):
     GENDER_CHOISE = [('M', 'Masculino'), ('F', 'Femenino')]
-    nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    apellidos = models.CharField(max_length=100, verbose_name="Apellidos")
+    names = models.CharField(max_length=50, verbose_name="Nombre")
+    surnames = models.CharField(max_length=100, verbose_name="Apellidos")
     dni = models.CharField(max_length=11, unique=True, verbose_name="Dni")
-    fecha_nac = models.DateField(
-        verbose_name="Fecha De Nacimiento", default=datetime.now, blank=True)
+    date_birthday = models.DateField(
+        default=datetime.now, verbose_name='Fecha de nacimiento')
     direccion = models.CharField(
-        max_length=50, blank=True, verbose_name="Direccion")
-    sexo = models.CharField(choices=GENDER_CHOISE,
-                            blank=True, verbose_name="Sexo", max_length=50)
+        max_length=150, null=True, blank=True, verbose_name='Dirección')
+    gender = models.CharField(
+        max_length=100, choices=GENDER_CHOISE, default='male', verbose_name='Sexo')
 
     def __str__(self) -> str:
-        return self.nombre
+        return self.names
 
     def toJSON(self):
-        return model_to_dict(self, exclude=[''])
+        item = model_to_dict(self)
+        item['gender'] = self.get_gender_display()
+        item['date_birthday'] = self.date_birthday.strftime('%Y-%m-%d')
+        return item
 
     class Meta:
         verbose_name = 'Cliente'
@@ -49,11 +53,21 @@ class Venta(models.Model):
         ordering = ['id']
 
 
-class Categoria(models.Model):
+class Categoria(BaseModel):  # para heredar una clase abstrac que no se va a crear ua tabla pero los campos que se definieron van aparecer en la tabla que la esta heredando
     nombre = models.CharField(verbose_name="Nombre",
                               unique=True, max_length=150)
     desc = models.CharField(max_length=500, null=True,
                             blank=True, verbose_name='Description')
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        user = get_current_user()
+        if user is not None:
+            if not self.pk:
+                self.user_create = user
+            else:
+                self.user_update = user
+        self.modified_by = user
+        return super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self) -> str:
         return str(self.nombre)
@@ -72,9 +86,9 @@ class Producto(models.Model):
         Categoria, on_delete=models.SET_NULL, blank=True, null=True)
     nombre = models.CharField(verbose_name="Nombre",
                               unique=True, max_length=150)
-    pvp = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    pvp = models.DecimalField(default=0.00, max_digits=12, decimal_places=2)
     image = models.ImageField(verbose_name='Image',
-                              upload_to='product/a', blank=True, null=True)
+                              upload_to='product/', blank=True, null=True)
 
     def get_image(self):
         if self.image:

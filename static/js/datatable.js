@@ -1,3 +1,8 @@
+
+let table = null;
+
 document.addEventListener('DOMContentLoaded', function () {
-    let table = new DataTable('#data');
+    table = new DataTable('#data');
 });
+
+export { table }

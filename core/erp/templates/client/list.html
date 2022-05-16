@@ -1,0 +1,131 @@
+{% extends 'list.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block head_list %}
+<script src="{% static 'client/js/list.js' %}"></script>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+{% endblock %}
+
+{% block column %}
+<tr>
+    <th scope="col" style="width: 10%;">Nro</th>
+    <th scope="col" style="width: 15%;">Nombres</th>
+    <th scope="col" style="width: 15%;">Apellidos</th>
+    <th scope="col" style="width: 10%;">Dni</th>
+    <th scope="col" style="width: 15%;">Fecha de nacimiento</th>
+    <th scope="col" style="width: 15%;">Sexo</th>
+    <th scope="col" style="width: 20%;">Opciones</th>
+</tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript %}
+
+<div class="modal fade" id="myModalClientDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form action="." method="post" class="form">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close closeButtonDelete" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="example_wrapper" class="dataTables_wrapper">
+                        {% csrf_token %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <h5><i class="icon fas fa-ban"></i> Notificación!</h5>
+                            ¿Estas seguro de eliminar el registro nro {{ object.id }}?
+                        </div>
+                        <input type="hidden" name="action" value="delete" />
+                        <input type="hidden" name="id" value="0" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-flat" id="button-delete">
+                        <i class="fas fa-save"></i> Si, aceptar
+                    </button>
+                    <a href="{{ list_url }}" class="btn btn-info btn-flat">
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="myModalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form action="." method="post" class="form">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close closeButton" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="example_wrapper" class="dataTables_wrapper">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="{{ action }}" />
+                        <input type="hidden" name="id" value="0" />
+                        {% for field in form.visible_fields %}
+                        <div class="form-group">
+                            <label for="id_nombre">{{field.label}}: </label>
+                            {{field|add_class:'form-control'|attr:'autocomplete:off' }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary closeButton" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="module" defer>
+    import { submit } from "{% static 'js/client/form.js' %}";
+    import "{% static 'js/functions.js' %}";
+
+    const button_add = document.getElementById('new-client');
+
+    button_add.addEventListener('click', (e) => {
+        const modal = document.getElementById('myModalClient');
+        modal.classList.toggle('show');
+        modal.style.display = 'block';
+    });
+
+    document.querySelector('#guardar').addEventListener('click', (e) => {
+        submit(e, '{% url "erp:client" %}', '{% url "erp:client" %}');
+        const modal = document.getElementById('myModalClient');
+        modal.classList.toggle('show');
+        modal.style.display = 'none';
+        // window.location = '{% url "erp:client" %}'
+    });
+
+    document.querySelector('#button-delete').addEventListener('click', (e) => {
+        submit(e, '{% url "erp:client" %}', '{% url "erp:client" %}');
+        const modal = document.getElementById('myModalClient');
+        modal.classList.toggle('show');
+        modal.style.display = 'none';
+        // window.location = '{% url "erp:client" %}'
+    });
+
+</script>
+{% endblock %}
+
+{% block footer %}
+<a href="#" class="btn btn-primary btn-flat btnTest" id="new-client">
+    <i class="fas fa-plus"></i> Nuevo registro
+</a>
+<a href="{% url 'erp:client' %}" class="btn btn-success btn-flat btnTest">
+    <i class="bi bi-arrow-clockwise"></i> Actualizar
+</a>
+{% endblock %}

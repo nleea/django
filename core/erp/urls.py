@@ -6,5 +6,6 @@ app_name = "erp"
 urlpatterns = [
     path('dashboard/', Dashboard.as_view(), name='dashboard'),
     path('category/', include('core.erp.url.category')),
-    path('product/', include('core.erp.url.product'))
+    path('product/', include('core.erp.url.product')),
+    path('client/',include('core.erp.url.client'))
 ]

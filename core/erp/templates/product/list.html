@@ -26,13 +26,13 @@
 {% for obj in object_list %}
 <tr>
     <td>{{ obj.id }}</td>
-    <td>{{ obj.name }}</td>
-    <td>{{ obj.cat.name }}</td>
+    <td>{{ obj.nombre }}</td>
+    <td class="text-center"><span class="badge badge-pill badge-secondary">${{ obj.pvp }}</span></td>
     <td class="text-center">
         {# {{ obj.image }}#}
-        <img src="{{ obj.get_image }}" class="img-fluid d-block mx-auto" style="width: 20px; height: 20px;">
+        <img src="{{ obj.get_image }}" class="img-fluid d-block mx-auto" style="width: 20px; height: 20px;" alt="image" >
     </td>
-    <td class="text-center"><span class="badge badge-pill badge-secondary">${{ obj.pvp }}</span></td>
+    
     <td class="text-center">
         <a href="{% url 'erp:product_update' obj.id %}" class="btn btn-warning ">
             <i class="bi bi-pencil-square"></i>
